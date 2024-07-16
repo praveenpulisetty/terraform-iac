@@ -23,7 +23,7 @@ jobs:
   terraform-operations:
     name: 'Terraform ${{ inputs.plan_options }}'
     runs-on: ubuntu-latest
-    needs: init
+    #git aneeds: init
     # if: ${{ github.event.inputs.plan_options == 'plan' }}
     steps:
       - name: Check out the repository
