@@ -3,17 +3,40 @@ resource "azurerm_resource_group" "testrg" {
   location = "eastus"
 }
 
-# Get Resources from a Resource Group
-data "azurerm_resource_group" "rg-kv" {
-  name = "rg-praveen"
+resource "azurerm_virtual_network" "vnet-test" {
+  address_space = "10.0.0.0/26"
+  resource_group_name = resource.azurerm_resource_group.testrg
+  location = resource.azurerm_resource_group.location
+  name = vnettest
+
 }
 
-data "azurerm_client_config" "current" {}
+resource "azurerm_subnet" "snet1" {
+  name = "public_snet"
+  virtual_network_name = resource.azurerm_virtual_network.vnet-test.name
+  resource_group_name = resource.azurerm_resource_group.testrg.name
+  address_prefixes = "10.0.1.0/28"  
+}
 
-resource "azurerm_key_vault" "my-kv" {
+resource "azurerm_subnet" "snet2" {
+  name = "private_snet"
+  virtual_network_name = resource.azurerm_virtual_network.vnet-test.name
+  resource_group_name = resource.azurerm_resource_group.testrg.name
+  address_prefixes = "10.0.2.0/28" 
+  
+}
+
+# Get Resources from a Resource Group
+#data "azurerm_resource_group" "rg-kv" {
+#  name = "rg-praveen"
+#}
+
+#data "azurerm_client_config" "current" {}
+
+/*resource "azurerm_key_vault" "my-kv" {
   name                        = "terraformkvp"
-  location                    = data.azurerm_resource_group.rg-kv.location
-  resource_group_name         = data.azurerm_resource_group.rg-kv.name
+  location                    = resource.azurerm_resource_group.testrg.location
+  resource_group_name         = resource.azurerm_resource_group.testrg.name
   enabled_for_disk_encryption = true
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 7
@@ -37,4 +60,4 @@ resource "azurerm_key_vault" "my-kv" {
       "Get",
     ]
   }
-}
+}*/
