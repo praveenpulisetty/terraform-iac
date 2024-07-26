@@ -5,23 +5,23 @@ resource "azurerm_resource_group" "testrg" {
 
 resource "azurerm_virtual_network" "vnet-test" {
   address_space = "10.0.0.0/26"
-  resource_group_name = resource.azurerm_resource_group.testrg
-  location = resource.azurerm_resource_group.location
-  name = vnettest
+  resource_group_name = azurerm_resource_group.testrg.name
+  location = azurerm_resource_group.testrg.location
+  name = "vnettest"
 
 }
 
 resource "azurerm_subnet" "snet1" {
   name = "public_snet"
-  virtual_network_name = resource.azurerm_virtual_network.vnet-test.name
-  resource_group_name = resource.azurerm_resource_group.testrg.name
+  virtual_network_name = azurerm_virtual_network.vnet-test.name
+  resource_group_name = azurerm_resource_group.testrg.name
   address_prefixes = "10.0.1.0/28"  
 }
 
 resource "azurerm_subnet" "snet2" {
   name = "private_snet"
-  virtual_network_name = resource.azurerm_virtual_network.vnet-test.name
-  resource_group_name = resource.azurerm_resource_group.testrg.name
+  virtual_network_name = azurerm_virtual_network.vnet-test.name
+  resource_group_name = azurerm_resource_group.testrg.name
   address_prefixes = "10.0.2.0/28" 
   
 }
